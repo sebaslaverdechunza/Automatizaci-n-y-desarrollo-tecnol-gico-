@@ -36,6 +36,30 @@ streamlit run app.py
 La aplicación se abrirá en tu navegador en:
 http://localhost:8501/
 
+🖥️ Interfaz del aplicativo
+
++ Subida de archivo (.csv o .xlsx).
+
+Si es Excel: detección automática de hojas y selector de cuál procesar.
+
+Opcionales:
+
+Columnas obligatorias: asegura que ciertas variables estén presentes.
+
+Columnas porcentaje: permite forzar que se validen como %.
+
+Botón Validar y generar anexo.
+
+Panel de resultados:
+
+Resumen de validación.
+
+Vista previa (primeras 20 filas).
+
+Errores detectados.
+
+Botón de descarga del anexo validado.
+
 ## 🖥️ Diseño del aplicativo
 
 ### Interfaz

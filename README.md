@@ -197,13 +197,11 @@ Excel, CSV, tableros y API
 
 ## 📥 1. Recolección de datos
 
-          1️⃣ Recolección de datos
+     Qué hace: enumeradores capturan la información en campo (hogares y personas).
 
-              Qué hace: enumeradores capturan la información en campo (hogares y personas).
+     Entradas: cuestionarios en tablets o formularios web.
 
-              Entradas: cuestionarios en tablets o formularios web.
-
-              Salidas: archivos crudos (CSV/JSON/Excel) + metadatos (fecha, encuestador, ubicación).
+     Salidas: archivos crudos (CSV/JSON/Excel) + metadatos (fecha, encuestador, ubicación).
 
 - **Entradas**: formularios de campo (CAPI, CATI, ODK, CSPro).  
 - **Salidas**: archivos crudos (CSV/JSON/Parquet) + manifiestos (metadatos de enumerador, fecha, GPS).  

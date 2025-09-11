@@ -147,6 +147,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 - Los **puntos críticos de validación automática** donde se asegura la calidad y consistencia de los datos.
 
 ---
+## Glosario de capas de datos
 
 + **Bronze** → Datos crudos, tal como llegan (sin cambios, solo estandarizados).
 + **Silver** → Datos limpios, con tipos corregidos, sin duplicados, listos para análisis preliminar.
@@ -173,7 +174,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
           |
           v
 +----------------------------------+   
-| Fase 3: Factores de Expansión    |   <-- (Vuelve a Fase 2 si factores inconsistentes)
+| Fase 3: Factores de Expansión    |  <-- (Vuelve a Fase 2 si factores inconsistentes)
 +----------------------------------+
    (Factores calibrados)
           |
@@ -185,7 +186,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
           |
           v
 +----------------------------------+  
-| Fase 5: EE y Varianzas           |     <-- (Vuelve a Fase 4 si varianzas anómalas)
+| Fase 5: EE y Varianzas           |  <-- (Vuelve a Fase 4 si varianzas anómalas)
 +----------------------------------+
    (Indicadores con EE/CV/IC)
           |
@@ -198,6 +199,9 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
           v
 [Fin: Productos Finales]
 ```
+
+> **Nota:** “Vuelve a Fase X” representa un **feedback loop**: si una validación falla en una fase, el pipeline regresa a la fase previa para corrección antes de continuar.
+
 ---
 
 ## Resumen del flujo general
@@ -214,7 +218,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
-## 🧩 Orquestación y control
+## ⚙️ Orquestación y control
 
 + **Orquestador**: Airflow o Prefect (DAG mensual con retries y alertas).
 + **Capas de datos**: Bronze → Silver → Gold (lineage y trazabilidad).
@@ -225,7 +229,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ## <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6ec57bed-b386-492a-82b2-8ceb2eba4c79" /> Pseudodiagrama de automatización (ejemplo con Prefect)
 
-```PYTHON
+```python
 from prefect import flow, task   # Prefect permite orquestar pipelines con tareas y flujos
 
 # ------------------ FASE 1: Recolección de datos (Bronze) ------------------
@@ -289,8 +293,13 @@ def geih_pipeline():
     anexos = make_annex(indicadores)              # 6. Anexos de salida
     return anexos                                 # Resultado final del pipeline
 ```
+---
 
+✅ Conclusión
 
+Este diseño organiza la operación de la GEIH en fases claras con entradas, salidas, herramientas y validaciones críticas.
+
+---
 
 ## 📥 1. Recolección de datos
 
@@ -305,12 +314,6 @@ def geih_pipeline():
   - Saltos lógicos del cuestionario.  
   - Rangos duros (edad 0–110, personas en hogar ≥1).  
   - Consistencia básica (ocupado ⇒ horas>0).  
-```
----
-
-✅ Conclusión
-
-Este diseño organiza la operación de la GEIH en fases claras con entradas, salidas, herramientas y validaciones críticas.
 
 ---
 
@@ -406,12 +409,4 @@ Este diseño organiza la operación de la GEIH en fases claras con entradas, sal
   - Formatos correctos (decimales, nombres de hoja).  
   - Totales y tasas reproducen resultados auditados.  
 
----
 
-## ⚙️ Orquestación y control
-- **Orquestador**: Airflow o Prefect con DAG mensual.  
-- **Monitoreo**: alertas en caso de errores.  
-- **Versionado**: Git para código; versionado de datasets (Bronze/Silver/Gold).  
-- **Seguridad**: control de accesos y anonimización de microdatos.
-
----

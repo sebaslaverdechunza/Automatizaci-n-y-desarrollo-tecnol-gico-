@@ -115,3 +115,174 @@ INICIO
   ofrecer descarga
 FIN
 
+ ---
+
+ # 📊 Pregunta 2 – Diagrama de procesos para la GEIH
+
+Este ejercicio presenta un **bosquejo general** de cómo automatizar las fases de la **Gran Encuesta Integrada de Hogares (GEIH)**, identificando entradas y salidas, herramientas/lenguajes y puntos críticos de validación.
+
+---
+
+## 🚀 Diseño del proceso (flujo general)
+
+[Inicio: Fuentes de Datos Externas]
+          |
+          v
++----------------------------------+
+| Fase 1: Recolección de Datos    |
++----------------------------------+
+    Archivos crudos + metadatos
+          |
+          v
++----------------------------------+
+| Fase 2: Carga y Validación      |  <-- (Retro si validación falla)
++----------------------------------+
+Datasets "Silver" + bitácora de errores
+          |
+          v
++----------------------------------+
+| Fase 3: Construcción de Factores|
+| de Expansión                    |  <-- (Retro si datos inconsistentes)
++----------------------------------+
+Factores ajustados y calibrados
+          |
+          v
++----------------------------------+
+| Fase 4: Generación de Bases de  |
+| Datos Validadas                 |
++----------------------------------+
+Tablas persona/hogar listas para análisis
+          |
+          v
++----------------------------------+
+| Fase 5: Estimación de Errores   |
+| Estándar y Varianzas            |  <-- (Retro si varianzas anómalas)
++----------------------------------+
+Indicadores con precisión
+          |
+          v
++----------------------------------+
+| Fase 6: Producción de Anexos/   |
+| Tablas de Salida                |
++----------------------------------+
+Excel, CSV, tableros y API
+          |
+          v
+[Fin: Archivos/Tables Finales + Reportes]
+
+
+---
+
+## 📥 1. Recolección de datos
+- **Entradas**: formularios de campo (CAPI, CATI, ODK, CSPro).  
+- **Salidas**: archivos crudos (CSV/JSON/Parquet) + manifiestos (metadatos de enumerador, fecha, GPS).  
+- **Herramientas**: sistemas de captura; exportadores a S3/GCS/FTP.  
+- **Validaciones críticas**:  
+  - Saltos lógicos del cuestionario.  
+  - Rangos duros (edad 0–110, personas en hogar ≥1).  
+  - Consistencia básica (ocupado ⇒ horas>0).  
+
+---
+
+## 🔍 2. Carga y validación
+- **Entradas**: archivos crudos.  
+- **Salidas**:  
+  - Capa **Bronze** (crudos estandarizados, inmutables).  
+  - Capa **Silver** (con tipos corregidos, claves limpias).  
+  - Bitácora de errores de calidad.  
+- **Herramientas**: Python (pandas), R (data.table), Great Expectations.  
+- **Validaciones críticas**:  
+  - Presencia de columnas esperadas.  
+  - Tipos correctos (numéricos, strings).  
+  - Unicidad de IDs.  
+  - Reglas lógicas (ej. menores de 12 no deberían tener ocupación).
+
+---
+
+## ⚖️ 3. Factores de expansión
+- **Entradas**: base Silver + marco muestral + población proyectada.  
+- **Salidas**: factores base y calibrados por dominio/estrato.  
+- **Herramientas**: R (`survey`, `srvyr`), Python (`statsmodels`).  
+- **Validaciones críticas**:  
+  - Suma de pesos ≈ población objetivo.  
+  - Pesos positivos y razonables.  
+  - Comparación histórica de distribución de pesos.  
+
+---
+
+## 🗄️ 4. Bases de datos validadas (Gold)
+- **Entradas**: Silver + factores.  
+- **Salidas**: tablas integradas (persona, hogar) listas para análisis.  
+- **Herramientas**: Python (pandas), R (data.table), SQL/dbt.  
+- **Validaciones críticas**:  
+  - Integridad hogar-persona.  
+  - Cobertura mínima por dominio.  
+  - Variables derivadas consistentes (ej. tasas calculadas).  
+
+---
+
+## 📊 5. Estimación de errores estándar y varianzas
+- **Entradas**: base Gold + diseño muestral (estratos, UPM, fpc) + factores.  
+- **Salidas**: indicadores con estimaciones, EE, CV e intervalos de confianza.  
+- **Herramientas**: R (`survey`) como estándar; Python (`statsmodels.survey`).  
+- **Validaciones críticas**:  
+  - CV dentro de umbrales.  
+  - Casos efectivos por dominio.  
+  - Coherencia temporal.  
+
+---
+
+## 📑 6. Producción de anexos/tablas de salida
+- **Entradas**: indicadores validados.  
+- **Salidas**:  
+  - Archivos Excel/CSV con tablas oficiales.  
+  - Dashboards (Power BI, Metabase).  
+  - API (FastAPI) para consulta automática.  
+- **Herramientas**: Python (`xlsxwriter`, FastAPI), R (`openxlsx`, `flextable`).  
+- **Validaciones críticas**:  
+  - Formatos correctos (decimales, nombres de hoja).  
+  - Totales y tasas reproducen resultados auditados.  
+
+---
+
+## ⚙️ Orquestación y control
+- **Orquestador**: Airflow o Prefect con DAG mensual.  
+- **Monitoreo**: alertas en caso de errores.  
+- **Versionado**: Git para código; versionado de datasets (Bronze/Silver/Gold).  
+- **Seguridad**: control de accesos y anonimización de microdatos.
+
+---
+
+## 🧩 Pseudodiagrama de automatización (Prefect)
+
+```python
+from prefect import flow, task
+
+@task
+def ingest(): return "bronze"
+
+@task
+def validate(bronze): return "silver", "dq_report"
+
+@task
+def build_weights(silver): return "weights"
+
+@task
+def assemble_gold(silver, weights): return "gold"
+
+@task
+def estimate(gold): return "indicadores"
+
+@task
+def make_annex(indicadores): return "anexos.xlsx"
+
+@flow
+def geih_pipeline():
+    bronze = ingest()
+    silver, dq = validate(bronze)
+    weights = build_weights(silver)
+    gold = assemble_gold(silver, weights)
+    indicadores = estimate(gold)
+    anexos = make_annex(indicadores)
+    return anexos
+```

@@ -1,8 +1,19 @@
-# Aplicativo de carga y exportación
+# 📊 Validador y Exportador de Anexos
 
-Este aplicativo sencillo permite cargar un archivo tabular (`.csv` o `.xlsx`), realizar una validación mínima de las columnas numéricas y exportar un **anexo en formato Excel** con los datos limpios y un registro de errores de validación.
+Aplicativo web sencillo para cargar archivos tabulares (`.csv` o `.xlsx`), validar mínimamente la estructura y exportar un archivo Excel (“anexo”) con los datos limpios y un registro de errores.
+
+Este ejercicio corresponde a la **Pregunta 1 – Aplicativo de carga y exportación**.
 
 ---
+
+## 🚀 Instalación y ejecución
+
+### 1. Clonar o copiar el repositorio
+Ubícate en la carpeta de trabajo y crea un entorno virtual:
+
+```bash
+python -m venv .venv
+
 
 ## 🖥️ Diseño del aplicativo
 

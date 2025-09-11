@@ -194,7 +194,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
           |
           v
 [Fin: Productos Finales]
-
+```
 ---
 
 ## Resumen del flujo general

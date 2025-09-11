@@ -197,10 +197,8 @@ Excel, CSV, tableros y API
 
 ## 📥 1. Recolección de datos
 
-     Qué hace: enumeradores capturan la información en campo (hogares y personas).
-
+     Qué hace: Enumeradores capturan la información en campo (hogares y personas).
      Entradas: cuestionarios en tablets o formularios web.
-
      Salidas: archivos crudos (CSV/JSON/Excel) + metadatos (fecha, encuestador, ubicación).
 
 - **Entradas**: formularios de campo (CAPI, CATI, ODK, CSPro).  
@@ -216,6 +214,15 @@ Excel, CSV, tableros y API
 ---
 
 ## 🔍 2. Carga y validación
+
+     Qué hace: Ingresa los archivos crudos a un sistema de almacenamiento y verifica su calidad.
+     Entradas: Archivos crudos.
+     Salidas: Datos limpios de primera capa (“Silver”) + reporte de errores.
+     Validaciones típicas:
+          - Que no falten columnas.
+          - Que los IDs sean únicos.
+          - Que los valores estén en rango (ej. edad no negativa).
+
 - **Entradas**: archivos crudos.  
 - **Salidas**:  
   - Capa **Bronze** (crudos estandarizados, inmutables).  

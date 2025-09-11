@@ -135,6 +135,9 @@ Considerando que una operación como la **GEIH** pasa por:
     - Herramientas/lenguajes que usarías (ej. R, Python, SQL, ETL).
     - Puntos críticos donde pondrías validaciones automáticas.
 ---
+
+**Solución:**
+
 Este ejercicio presenta un **bosquejo general** de cómo automatizar las fases de la **Gran Encuesta Integrada de Hogares (GEIH)**, identificando entradas y salidas, herramientas/lenguajes y puntos críticos de validación.
 
 ---

@@ -1,4 +1,4 @@
-# 📊 Validador y Exportador de Anexos
+# 📊 Validador y Exportador de Anexos (Pregunta 1 – Aplicativo de carga y exportación)
 
 Aplicativo web sencillo para cargar archivos tabulares (`.csv` o `.xlsx`), validar mínimamente la estructura y exportar un archivo Excel (“anexo”) con los datos limpios y un registro de errores.
 

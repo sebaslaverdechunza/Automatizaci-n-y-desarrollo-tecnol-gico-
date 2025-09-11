@@ -202,6 +202,14 @@ Excel, CSV, tableros y API
   - Rangos duros (edad 0–110, personas en hogar ≥1).  
   - Consistencia básica (ocupado ⇒ horas>0).  
 
+
+          + 1️⃣ Recolección de datos
+
+               Qué hace: enumeradores capturan la información en campo (hogares y personas).
+
+               Entradas: cuestionarios en tablets o formularios web.
+
+               Salidas: archivos crudos (CSV/JSON/Excel) + metadatos (fecha, encuestador, ubicación).
 ---
 
 ## 🔍 2. Carga y validación

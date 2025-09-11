@@ -186,7 +186,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
           |
           v
 +----------------------------------+  
-| Fase 5: EE y Varianzas           |  <-- (Vuelve a Fase 4 si varianzas anómalas)
+| Fase 5: Estimación de EE y Varianzas |  <-- (Vuelve a Fase 4 si varianzas anómalas)
 +----------------------------------+
    (Indicadores con EE/CV/IC)
           |
@@ -212,7 +212,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 | 2. Carga y validación     | Crudos                                       | Bronze (estandarizado), Silver (tipos/llaves), reporte DQ | Python/R, Great Expectations, SQL | Esquema, tipos, IDs únicos, reglas lógicas y geográficas     |
 | 3. Factores de expansión  | Silver + marco + proyecciones                | Factores base y calibrados (dominio/estrato)              | R `samplesize4surveys, survey` / Python `statsmodels` | Suma pesos ≈ población; pesos > 0; estabilidad histórica     |
 | 4. Bases validadas (Gold) | Silver + factores                            | Gold (persona/hogar) + codebook                           | SQL/dbt, pandas/data.table        | Integridad hogar–persona; cobertura por dominio; derivadas   |
-| 5. EE y Varianzas         | Gold + diseño (estrato, UPM, fpc) + factores | Indicadores con EE, CV, IC                                | R `samplesize4surveys, survey` (estándar)             | CV ≤ umbrales; n efectivo; coherencia temporal               |
+| 5. Estimación de EE y Varianzas | Gold + diseño (estrato, UPM, fpc) + factores | Indicadores con EE, CV, IC                                | R `samplesize4surveys, survey` (estándar)             | CV ≤ umbrales; n efectivo; coherencia temporal               |
 | 6. Anexos / salida        | Indicadores validados                        | Excel/CSV, dashboards, API                                | Python (xlsxwriter/FastAPI), BI   | Formatos (decimales/hojas), totales consistentes, versionado |
 
 ---

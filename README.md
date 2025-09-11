@@ -136,7 +136,7 @@ Considerando que una operación como la **GEIH** pasa por:
     - Puntos críticos donde pondrías validaciones automáticas.
 ---
 
-**Solución:**
+## **Solución:**
 
 Este documento presenta un **bosquejo general** de cómo automatizar el proceso de la **Gran Encuesta Integrada de Hogares (GEIH)**.  
 El objetivo no es una implementación completa, sino un esquema conceptual que demuestre habilidades de diseño de pipelines, mostrando de manera clara:
@@ -158,47 +158,42 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
           |
           v
 +----------------------------------+
-| Fase 1: Recolección de Datos    |
+| Fase 1: Recolección de Datos     |
 +----------------------------------+
-    Archivos crudos + metadatos
+   (Archivos crudos + metadatos)
+          |
+          v
++----------------------------------+   <--- (Retro si validación falla)
+| Fase 2: Carga y Validación       |
++----------------------------------+
+   (Silver + bitácora de calidad)
+          |
+          v
++----------------------------------+   <--- (Retro si pesos inconsistentes)
+| Fase 3: Factores de Expansión    |
++----------------------------------+
+   (Factores calibrados)
           |
           v
 +----------------------------------+
-| Fase 2: Carga y Validación      |  <-- (Retro si validación falla)
+| Fase 4: Bases Validadas (Gold)   |
 +----------------------------------+
-Datasets "Silver" + bitácora de errores
+   (Tablas persona/hogar de análisis)
+          |
+          v
++----------------------------------+   <--- (Retro si varianzas anómalas)
+| Fase 5: EE y Varianzas           |
++----------------------------------+
+   (Indicadores con EE/CV/IC)
           |
           v
 +----------------------------------+
-| Fase 3: Construcción de Factores|
-| de Expansión                    |  <-- (Retro si datos inconsistentes)
+| Fase 6: Anexos / Tablas de Salida|
 +----------------------------------+
-Factores ajustados y calibrados
+   (Excel, CSV, dashboards, API)
           |
           v
-+----------------------------------+
-| Fase 4: Generación de Bases de  |
-| Datos Validadas                 |
-+----------------------------------+
-Tablas persona/hogar listas para análisis
-          |
-          v
-+----------------------------------+
-| Fase 5: Estimación de Errores   |
-| Estándar y Varianzas            |  <-- (Retro si varianzas anómalas)
-+----------------------------------+
-Indicadores con precisión
-          |
-          v
-+----------------------------------+
-| Fase 6: Producción de Anexos/   |
-| Tablas de Salida                |
-+----------------------------------+
-Excel, CSV, tableros y API
-          |
-          v
-[Fin: Archivos/Tablas Finales + Reportes]
-```
+[Fin: Productos Finales]
 
 ---
 

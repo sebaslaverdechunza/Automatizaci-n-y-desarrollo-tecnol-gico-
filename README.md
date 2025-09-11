@@ -211,7 +211,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
-🧩 Orquestación y control
+## 🧩 Orquestación y control
 
 + **Orquestador**: Airflow o Prefect (DAG mensual con retries y alertas).
 + **Capas de datos**: Bronze → Silver → Gold (lineage y trazabilidad).
@@ -220,7 +220,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
-Pseudodiagrama de automatización (ejemplo con Prefect)
+## <img width="280" height="280" alt="image" src="https://github.com/user-attachments/assets/6ec57bed-b386-492a-82b2-8ceb2eba4c79" /> Pseudodiagrama de automatización (ejemplo con Prefect)
 
 ```PYTHON
 from prefect import flow, task

@@ -125,6 +125,9 @@ Este ejercicio presenta un **bosquejo general** de cómo automatizar las fases d
 
 ## 🚀 Diseño del proceso (flujo general)
 
+## 🚀 Diseño del proceso (flujo general)
+
+```text
 [Inicio: Fuentes de Datos Externas]
           |
           v
@@ -168,8 +171,8 @@ Indicadores con precisión
 Excel, CSV, tableros y API
           |
           v
-[Fin: Archivos/Tables Finales + Reportes]
-
+[Fin: Archivos/Tablas Finales + Reportes]
+```
 
 ---
 

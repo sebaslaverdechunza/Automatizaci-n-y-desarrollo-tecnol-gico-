@@ -209,6 +209,51 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 | 6. Anexos / salida        | Indicadores validados                        | Excel/CSV, dashboards, API                                | Python (xlsxwriter/FastAPI), BI   | Formatos (decimales/hojas), totales consistentes, versionado |
 
 
+---
+
+🧩 Orquestación y control
+
++ **Orquestador**: Airflow o Prefect (DAG mensual con retries y alertas).
++ **Capas de datos**: Bronze → Silver → Gold (lineage y trazabilidad).
++ **Versionado**: Git para código; convenciones de datasets versionados.
++ **Seguridad**: control de accesos y anonimización de microdatos cuando aplique.
+
+---
+
+Pseudodiagrama de automatización (ejemplo con Prefect)
+
+```PYTHON
+from prefect import flow, task
+
+@task(retries=2)
+def ingest(): return "bronze"
+
+@task
+def validate(bronze): return "silver", "dq_report"
+
+@task
+def build_weights(silver): return "weights"
+
+@task
+def assemble_gold(silver, weights): return "gold"
+
+@task
+def estimate(gold): return "indicadores"
+
+@task
+def make_annex(indicadores): return "anexos.xlsx"
+
+@flow
+def geih_pipeline():
+    bronze = ingest()
+    silver, dq = validate(bronze)
+    weights = build_weights(silver)
+    gold = assemble_gold(silver, weights)
+    indicadores = estimate(gold)
+    anexos = make_annex(indicadores)
+    return anexos
+
+
 ## 📥 1. Recolección de datos
 
      Qué hace: Enumeradores capturan la información en campo (hogares y personas).
@@ -222,7 +267,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
   - Saltos lógicos del cuestionario.  
   - Rangos duros (edad 0–110, personas en hogar ≥1).  
   - Consistencia básica (ocupado ⇒ horas>0).  
-
+```
 
 
 ---

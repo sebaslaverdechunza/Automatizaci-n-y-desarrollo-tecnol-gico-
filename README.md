@@ -119,6 +119,22 @@ FIN
 
  # 📊 Pregunta 2 – Diagrama de procesos para la GEIH
 
+Considerando que una operación como la **GEIH** pasa por:
+
+    + Recolección de datos
+    + Carga y validación
+    + Construcción de factores de expansión
+    + Generación de bases de datos validadas
+    + Estimación de errores estándar y varianzas
+    + Producción de anexos/tablas de salida
+
+    
+👉 **Pregunta**: Diseña un **diagrama de procesos** (puede ser un flujo con cajas y flechas, pseudodiagrama o explicación textual detallada) que muestre cómo automatizarías esas fases, identificando:
+
+    - Entradas y salidas de cada fase.
+    - Herramientas/lenguajes que usarías (ej. R, Python, SQL, ETL).
+    - Puntos críticos donde pondrías validaciones automáticas.
+---
 Este ejercicio presenta un **bosquejo general** de cómo automatizar las fases de la **Gran Encuesta Integrada de Hogares (GEIH)**, identificando entradas y salidas, herramientas/lenguajes y puntos críticos de validación.
 
 ---

@@ -210,11 +210,10 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 | ------------------------- | -------------------------------------------- | --------------------------------------------------------- | --------------------------------- | ------------------------------------------------------------ |
 | 1. Recolección            | Formularios (CAPI/CATI/ODK) + metadatos      | Crudos (CSV/JSON/Parquet), manifiestos                    | ODK/CSPro/SurveyCTO               | Saltos lógicos, rangos duros (edad 0–110), ocupación–horas   |
 | 2. Carga y validación     | Crudos                                       | Bronze (estandarizado), Silver (tipos/llaves), reporte DQ | Python/R, Great Expectations, SQL | Esquema, tipos, IDs únicos, reglas lógicas y geográficas     |
-| 3. Factores de expansión  | Silver + marco + proyecciones                | Factores base y calibrados (dominio/estrato)              | R `survey` / Python `statsmodels` | Suma pesos ≈ población; pesos > 0; estabilidad histórica     |
+| 3. Factores de expansión  | Silver + marco + proyecciones                | Factores base y calibrados (dominio/estrato)              | R `samplesize4surveys, survey` / Python `statsmodels` | Suma pesos ≈ población; pesos > 0; estabilidad histórica     |
 | 4. Bases validadas (Gold) | Silver + factores                            | Gold (persona/hogar) + codebook                           | SQL/dbt, pandas/data.table        | Integridad hogar–persona; cobertura por dominio; derivadas   |
 | 5. EE y Varianzas         | Gold + diseño (estrato, UPM, fpc) + factores | Indicadores con EE, CV, IC                                | R `survey` (estándar)             | CV ≤ umbrales; n efectivo; coherencia temporal               |
 | 6. Anexos / salida        | Indicadores validados                        | Excel/CSV, dashboards, API                                | Python (xlsxwriter/FastAPI), BI   | Formatos (decimales/hojas), totales consistentes, versionado |
-
 
 ---
 
@@ -295,118 +294,8 @@ def geih_pipeline():
 ```
 ---
 
-✅ Conclusión
+✅ Conclusión  
+Este diseño organiza la operación de la GEIH en fases claras con sus entradas, salidas, herramientas y validaciones críticas, asegurando trazabilidad y control de calidad en todo el pipeline.
 
-Este diseño organiza la operación de la GEIH en fases claras con entradas, salidas, herramientas y validaciones críticas.
-
----
-
-## 📥 1. Recolección de datos
-
-     Qué hace: Enumeradores capturan la información en campo (hogares y personas).
-     Entradas: cuestionarios en tablets o formularios web.
-     Salidas: archivos crudos (CSV/JSON/Excel) + metadatos (fecha, encuestador, ubicación).
-
-- **Entradas**: formularios de campo (CAPI, CATI, ODK, CSPro).  
-- **Salidas**: archivos crudos (CSV/JSON/Parquet) + manifiestos (metadatos de enumerador, fecha, GPS).  
-- **Herramientas**: sistemas de captura; exportadores a S3/GCS/FTP.  
-- **Validaciones críticas**:  
-  - Saltos lógicos del cuestionario.  
-  - Rangos duros (edad 0–110, personas en hogar ≥1).  
-  - Consistencia básica (ocupado ⇒ horas>0).  
-
----
-
-## 🔍 2. Carga y validación
-
-     Qué hace: Ingresa los archivos crudos a un sistema de almacenamiento y verifica su calidad.
-     Entradas: Archivos crudos.
-     Salidas: Datos limpios de primera capa (“Silver”) + reporte de errores.
-     Validaciones típicas:
-          - Que no falten columnas.
-          - Que los IDs sean únicos.
-          - Que los valores estén en rango (ej. edad no negativa).
-
-- **Entradas**: archivos crudos.  
-- **Salidas**:  
-  - Capa **Bronze** (crudos estandarizados, inmutables).  
-  - Capa **Silver** (con tipos corregidos, claves limpias).  
-  - Bitácora de errores de calidad.  
-- **Herramientas**: Python (pandas), R (data.table), Great Expectations.  
-- **Validaciones críticas**:  
-  - Presencia de columnas esperadas.  
-  - Tipos correctos (numéricos, strings).  
-  - Unicidad de IDs.  
-  - Reglas lógicas (ej. menores de 12 no deberían tener ocupación).
-
----
-
-## ⚖️ 3. Factores de expansión
-
-     Qué hace: genera pesos para que cada persona/hogar represente a la población total.
-     Entradas: bases limpias + marco muestral + proyecciones de población.
-     Salidas: factores ajustados y calibrados (un número por registro).
-     Valida: que la suma de factores ≈ población oficial.
-          
-- **Entradas**: base Silver + marco muestral + población proyectada.  
-- **Salidas**: factores base y calibrados por dominio/estrato.  
-- **Herramientas**: R (`survey`, `srvyr`), Python (`statsmodels`).  
-- **Validaciones críticas**:  
-  - Suma de pesos ≈ población objetivo.  
-  - Pesos positivos y razonables.  
-  - Comparación histórica de distribución de pesos.  
-
----
-
-## 🗄️ 4. Bases de datos validadas (Gold)
-
-    Qué hace: integra datos de hogares y personas en una base lista para análisis (“Gold”).
-    Entradas: datos Silver + factores.
-    Salidas: tablas finales (hogar/persona) con variables derivadas (ej. tasas de participación).
-    Valida: consistencia entre hogar y persona, y cobertura por dominios.
-
-- **Entradas**: Silver + factores.  
-- **Salidas**: tablas integradas (persona, hogar) listas para análisis.  
-- **Herramientas**: Python (pandas), R (data.table), SQL/dbt.  
-- **Validaciones críticas**:  
-  - Integridad hogar-persona.  
-  - Cobertura mínima por dominio.  
-  - Variables derivadas consistentes (ej. tasas calculadas).  
-
----
-
-## 📊 5. Estimación de errores estándar y varianzas
-
-    Qué hace: calcula no solo los indicadores (ej. tasa de desempleo), sino también su precisión (errores estándar, coeficientes de variación).
-    Entradas: bases Gold + diseño muestral (estratos, UPM) + factores.
-    Salidas: indicadores con EE y CV por dominio/periodo.
-    Valida: que los errores no sean excesivos y que haya casos suficientes por grupo.
-
-- **Entradas**: base Gold + diseño muestral (estratos, UPM, fpc) + factores.  
-- **Salidas**: indicadores con estimaciones, EE, CV e intervalos de confianza.  
-- **Herramientas**: R (`survey`) como estándar; Python (`statsmodels.survey`).  
-- **Validaciones críticas**:  
-  - CV dentro de umbrales.  
-  - Casos efectivos por dominio.  
-  - Coherencia temporal.  
-
----
-
-## 📑 6. Producción de anexos/tablas de salida
-
-    Qué hace: genera los productos finales para publicar.
-    Entradas: indicadores validados.
-    Salidas: Excel, CSV, tableros (Power BI, Metabase) o API para consulta automática.
-    Valida: formatos correctos, totales consistentes, decimales uniformes.
-
-- **Entradas**: indicadores validados.  
-- **Salidas**:  
-  - Archivos Excel/CSV con tablas oficiales.  
-  - Dashboards (Power BI, Metabase).  
-  - API (FastAPI) para consulta automática.  
-- **Herramientas**: Python (`xlsxwriter`, FastAPI), R (`openxlsx`, `flextable`).  
-- **Validaciones críticas**:  
-  - Formatos correctos (decimales, nombres de hoja).  
-  - Totales y tasas reproducen resultados auditados.  
 
 

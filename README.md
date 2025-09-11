@@ -45,9 +45,9 @@ http://localhost:8501/
 
 + Opcionales:
 
- ++ Columnas obligatorias: asegura que ciertas variables estén presentes.
+     + Columnas obligatorias: asegura que ciertas variables estén presentes.
 
- ++ Columnas porcentaje: permite forzar que se validen como %.
+     + Columnas porcentaje: permite forzar que se validen como %.
 
 + Botón Validar y generar anexo.
 

@@ -125,8 +125,6 @@ Este ejercicio presenta un **bosquejo general** de cómo automatizar las fases d
 
 ## 🚀 Diseño del proceso (flujo general)
 
-## 🚀 Diseño del proceso (flujo general)
-
 ```text
 [Inicio: Fuentes de Datos Externas]
           |

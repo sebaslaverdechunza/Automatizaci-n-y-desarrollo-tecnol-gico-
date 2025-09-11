@@ -138,7 +138,16 @@ Considerando que una operación como la **GEIH** pasa por:
 
 **Solución:**
 
-Este ejercicio presenta un **bosquejo general** de cómo automatizar las fases de la **Gran Encuesta Integrada de Hogares (GEIH)**, identificando entradas y salidas, herramientas/lenguajes y puntos críticos de validación.
+Este documento presenta un **bosquejo general** de cómo automatizar el proceso de la **Gran Encuesta Integrada de Hogares (GEIH)**.  
+El objetivo no es una implementación completa, sino un esquema conceptual que demuestre habilidades de diseño de pipelines, mostrando de manera clara:
+
+- Las **fases principales** (recolección, validación, factores, bases validadas, estimación y producción de anexos).  
+- Las **entradas y salidas** de cada fase.  
+- Las **herramientas y lenguajes** adecuados (Python, R, SQL, orquestadores ETL).  
+- Los **puntos críticos de validación automática** donde se asegura la calidad y consistencia de los datos.
+
+---
+
 
 ---
 

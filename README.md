@@ -15,6 +15,27 @@ Ubícate en la carpeta de trabajo y crea un entorno virtual:
 python -m venv .venv
 ```
 
+### 2. Activar el entorno virtual
+Windows PowerShell:
+
+```bash
+.\.venv\Scripts\Activate.ps1
+```
+### 3. Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Ejecutar el aplicativo
+
+```bash
+streamlit run app.py
+```
+
+La aplicación se abrirá en tu navegador en:
+http://localhost:8501/
+
 ## 🖥️ Diseño del aplicativo
 
 ### Interfaz

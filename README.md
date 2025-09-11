@@ -220,7 +220,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
-## <img width="280" height="280" alt="image" src="https://github.com/user-attachments/assets/6ec57bed-b386-492a-82b2-8ceb2eba4c79" /> Pseudodiagrama de automatización (ejemplo con Prefect)
+## <img width="10" height="10" alt="image" src="https://github.com/user-attachments/assets/6ec57bed-b386-492a-82b2-8ceb2eba4c79" /> Pseudodiagrama de automatización (ejemplo con Prefect)
 
 ```PYTHON
 from prefect import flow, task

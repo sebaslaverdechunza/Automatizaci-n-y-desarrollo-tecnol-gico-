@@ -148,6 +148,9 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
++ **Bronze** → Datos crudos, tal como llegan (sin cambios, solo estandarizados).
++ **Silver** → Datos limpios, con tipos corregidos, sin duplicados, listos para análisis preliminar.
++ **Gold** → Datos ya validados y enriquecidos, con todas las reglas de negocio aplicadas, factores de expansión incorporados y listos para producir indicadores oficiales.
 
 ---
 
@@ -223,35 +226,70 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 ## <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6ec57bed-b386-492a-82b2-8ceb2eba4c79" /> Pseudodiagrama de automatización (ejemplo con Prefect)
 
 ```PYTHON
-from prefect import flow, task
+from prefect import flow, task   # Prefect permite orquestar pipelines con tareas y flujos
 
-@task(retries=2)
-def ingest(): return "bronze"
+# ------------------ FASE 1: Recolección de datos (Bronze) ------------------
+@task(retries=2)                  # Si falla, intenta 2 veces más (robustez)
+def ingest():
+    # Simula la ingesta de datos crudos desde formularios/campo
+    # Retorna la "capa Bronze": datos sin procesar, estandarizados
+    return "bronze"
 
+# ------------------ FASE 2: Carga y Validación (Silver) ------------------
 @task
-def validate(bronze): return "silver", "dq_report"
+def validate(bronze):
+    # Recibe datos Bronze
+    # Aplica validaciones (tipos correctos, IDs únicos, rangos)
+    # Retorna:
+    #   - "silver": datos limpios y listos
+    #   - "dq_report": reporte de calidad con errores detectados
+    return "silver", "dq_report"
 
+# ------------------ FASE 3: Factores de Expansión ------------------
 @task
-def build_weights(silver): return "weights"
+def build_weights(silver):
+    # Recibe datos Silver
+    # Calcula factores de expansión (pesos para representar población total)
+    # Retorna "weights": factores calibrados
+    return "weights"
 
+# ------------------ FASE 4: Bases validadas (Gold) ------------------
 @task
-def assemble_gold(silver, weights): return "gold"
+def assemble_gold(silver, weights):
+    # Combina datos Silver con los factores de expansión
+    # Integra tablas de hogares y personas → base final validada
+    # Retorna "gold": base Gold lista para análisis
+    return "gold"
 
+# ------------------ FASE 5: Estimación de indicadores ------------------
 @task
-def estimate(gold): return "indicadores"
+def estimate(gold):
+    # Recibe la base Gold
+    # Calcula indicadores (ej. tasa de desempleo) + errores estándar / CV
+    # Retorna "indicadores": dataset con resultados estadísticos
+    return "indicadores"
 
+# ------------------ FASE 6: Producción de anexos/tablas ------------------
 @task
-def make_annex(indicadores): return "anexos.xlsx"
+def make_annex(indicadores):
+    # Recibe indicadores
+    # Genera los anexos/tablas oficiales en Excel, CSV, dashboards
+    # Retorna archivo final (ej. "anexos.xlsx")
+    return "anexos.xlsx"
 
+# ------------------ ORQUESTACIÓN DEL PIPELINE ------------------
 @flow
 def geih_pipeline():
-    bronze = ingest()
-    silver, dq = validate(bronze)
-    weights = build_weights(silver)
-    gold = assemble_gold(silver, weights)
-    indicadores = estimate(gold)
-    anexos = make_annex(indicadores)
-    return anexos
+    # Orquesta las fases en orden secuencial:
+    bronze = ingest()                             # 1. Ingesta (Bronze)
+    silver, dq = validate(bronze)                 # 2. Validación (Silver + reporte DQ)
+    weights = build_weights(silver)               # 3. Factores de expansión
+    gold = assemble_gold(silver, weights)         # 4. Base validada (Gold)
+    indicadores = estimate(gold)                  # 5. Indicadores + EE
+    anexos = make_annex(indicadores)              # 6. Anexos de salida
+    return anexos                                 # Resultado final del pipeline
+```
+
 
 
 ## 📥 1. Recolección de datos
@@ -268,7 +306,11 @@ def geih_pipeline():
   - Rangos duros (edad 0–110, personas en hogar ≥1).  
   - Consistencia básica (ocupado ⇒ horas>0).  
 ```
+---
 
+✅ Conclusión
+
+Este diseño organiza la operación de la GEIH en fases claras con entradas, salidas, herramientas y validaciones críticas.
 
 ---
 

@@ -53,13 +53,18 @@ http://localhost:8501/
 
 + Panel de resultados:
 
-  ++ Resumen de validación.
+     + Resumen de validación.
 
-  ++ Vista previa (primeras 20 filas).
+     + Vista previa (primeras 20 filas).
 
-  ++ Errores detectados.
+     + Errores detectados.
 
-  ++ Botón de descarga del anexo validado.
+     + Botón de descarga del anexo validado.
+ 
+
+ ---
+ 
+✅ Pregunta 1 – Aplicativo de carga y exportación
 
 ## 🖥️ Diseño del aplicativo
 
@@ -84,32 +89,29 @@ http://localhost:8501/
 
 ## 🔎 Pseudocódigo
 
-```text
 INICIO
+  archivo <- subir (.csv | .xlsx)
+  si es Excel:
+      hoja <- seleccionar (por defecto “Base”)
 
-mostrar input de archivo (csv/xlsx)
-si xlsx:
-    seleccionar hoja (default: "Base")
+  df <- leer_archivo(archivo, hoja)
 
-leer archivo a dataframe
-crear copia clean
+  clean <- copiar(df)
+  errores <- []
 
-numeric_cols <- []
-PARA cada columna c EN dataframe:
-    si >=80% de valores parseables a número:
-        numeric_cols.agregar(c)
+  PARA cada columna en df:
+    si es numérica:
+      parsed <- normalizar_y_convertir(columna)
+      registrar errores si no convertible
+      si columna es porcentaje:
+        registrar errores si valor <0 o >100
+        guardar como fracción (Excel %)
+      sino:
+        guardar como numérico
 
-errores <- []
-PARA cada columna c EN numeric_cols:
-    parsed <- convertir valores a número
-    SI valor original no vacío Y parsed es NA:
-        registrar error (fila_excel, columna, valor_original)
-    reemplazar columna por parsed en clean
-
-exportar Excel con dos hojas:
-    - Datos_Limpios: clean
-    - Errores_Validacion: errores
-
-mostrar botón de descarga
-
+  generar Excel con:
+    - Hoja Datos_Limpios
+    - Hoja Errores_Validacion
+  ofrecer descarga
 FIN
+

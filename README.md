@@ -238,6 +238,12 @@ Excel, CSV, tableros y API
 ---
 
 ## ⚖️ 3. Factores de expansión
+
+     Qué hace: genera pesos para que cada persona/hogar represente a la población total.
+     Entradas: bases limpias + marco muestral + proyecciones de población.
+     Salidas: factores ajustados y calibrados (un número por registro).
+     Valida: que la suma de factores ≈ población oficial.
+          
 - **Entradas**: base Silver + marco muestral + población proyectada.  
 - **Salidas**: factores base y calibrados por dominio/estrato.  
 - **Herramientas**: R (`survey`, `srvyr`), Python (`statsmodels`).  
@@ -249,6 +255,12 @@ Excel, CSV, tableros y API
 ---
 
 ## 🗄️ 4. Bases de datos validadas (Gold)
+
+    Qué hace: integra datos de hogares y personas en una base lista para análisis (“Gold”).
+    Entradas: datos Silver + factores.
+    Salidas: tablas finales (hogar/persona) con variables derivadas (ej. tasas de participación).
+    Valida: consistencia entre hogar y persona, y cobertura por dominios.
+
 - **Entradas**: Silver + factores.  
 - **Salidas**: tablas integradas (persona, hogar) listas para análisis.  
 - **Herramientas**: Python (pandas), R (data.table), SQL/dbt.  
@@ -260,6 +272,12 @@ Excel, CSV, tableros y API
 ---
 
 ## 📊 5. Estimación de errores estándar y varianzas
+
+    Qué hace: calcula no solo los indicadores (ej. tasa de desempleo), sino también su precisión (errores estándar, coeficientes de variación).
+    Entradas: bases Gold + diseño muestral (estratos, UPM) + factores.
+    Salidas: indicadores con EE y CV por dominio/periodo.
+    Valida: que los errores no sean excesivos y que haya casos suficientes por grupo.
+
 - **Entradas**: base Gold + diseño muestral (estratos, UPM, fpc) + factores.  
 - **Salidas**: indicadores con estimaciones, EE, CV e intervalos de confianza.  
 - **Herramientas**: R (`survey`) como estándar; Python (`statsmodels.survey`).  
@@ -271,6 +289,12 @@ Excel, CSV, tableros y API
 ---
 
 ## 📑 6. Producción de anexos/tablas de salida
+
+    Qué hace: genera los productos finales para publicar.
+    Entradas: indicadores validados.
+    Salidas: Excel, CSV, tableros (Power BI, Metabase) o API para consulta automática.
+    Valida: formatos correctos, totales consistentes, decimales uniformes.
+
 - **Entradas**: indicadores validados.  
 - **Salidas**:  
   - Archivos Excel/CSV con tablas oficiales.  

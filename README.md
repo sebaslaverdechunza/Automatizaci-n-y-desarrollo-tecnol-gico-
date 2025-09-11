@@ -13,7 +13,7 @@ Ubícate en la carpeta de trabajo y crea un entorno virtual:
 
 ```bash
 python -m venv .venv
-
+```
 
 ## 🖥️ Diseño del aplicativo
 

@@ -29,10 +29,15 @@ Aplicación web mínima (**Flask**) que:
 
      + Datos_Deseados (matriz final por Concepto × Año/Mes).
 
-Interfaz con: carga de archivo, tabla Resumen de columnas y vista previa HTML de Datos_Deseados; botón Descargar anexo.
++ Interfaz con: carga de archivo, tabla Resumen de columnas y vista previa HTML de Datos_Deseados; botón Descargar anexo.
 
 > Se asume que la base puede venir en una hoja Base (o la primera hoja si no existe) y que “Total Nacional” es una referencia de cómo se espera ver la información.
 ---
+
+### 2) Diseño del aplicativo
+
+
+===
 
 # 📊 Validador y Exportador de Anexos (Pregunta 1 – Aplicativo de carga y exportación)
 

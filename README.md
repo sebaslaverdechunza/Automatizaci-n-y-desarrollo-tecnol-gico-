@@ -154,8 +154,7 @@ python -m venv .venv
 #   Windows (CMD)       : .\.venv\Scripts\activate.bat
 #   macOS/Linux         : source .venv/bin/activate
 
-python -m pip install -r requirements.txt
-# (o) python -m pip install Flask pandas numpy openpyxl XlsxWriter
+python -m pip install Flask pandas numpy openpyxl XlsxWriter
 
 python app.py
 ```

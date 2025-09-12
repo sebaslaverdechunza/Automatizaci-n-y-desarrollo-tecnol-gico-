@@ -143,24 +143,34 @@ construir_excel(df_limpio, df_multi, validaciones, resumen):
 
 **Requisitos**: Python 3.10+ · `Flask`, `pandas`, `numpy`, `openpyxl`, `xlsxwriter`
 
++ **Opción A — Activando el entorno virtual (sesión interactiva)**
+
 ```bash
-(Opción A)
-
 python -m venv .venv
-# En PowerShell (si aplica): Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-# Activar venv:
-#   PS:   .\.venv\Scripts\Activate.ps1
-#   CMD:  .\.venv\Scripts\activate.bat
-#   macOS/Linux: source .venv/bin/activate
+# PowerShell (si aplica): Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
-(Opción B)
+# Activar el entorno:
+#   Windows (PowerShell): .\.venv\Scripts\Activate.ps1
+#   Windows (CMD)       : .\.venv\Scripts\activate.bat
+#   macOS/Linux         : source .venv/bin/activate
 
-PS C:\Users\USUARIO\Documents\PRUEBAS\DANE - AUTOMATIZACIONES\app_validador> & "C:/Users/USUARIO/Documents/PRUEBAS/DANE - AUTOMATIZACIONES/app_validador/.venv/Scripts/python.exe" "c:/Users/USUARIO/Documents/PRUEBAS/DANE - AUTOMATIZACIONES/app_validador/app.py"
+python -m pip install -r requirements.txt
+# (o) python -m pip install Flask pandas numpy openpyxl XlsxWriter
 
-
-pip install Flask pandas numpy openpyxl XlsxWriter
 python app.py
 ```
+
++ **Opción B — Invocación explícita del intérprete del venv (sin activar el entorno)**
+
+  
+Windows (PowerShell/CMD):
+```bash
+"C:/ruta/al/proyecto/.venv/Scripts/python.exe" -m pip install Flask pandas numpy openpyxl XlsxWriter
+
+# Ejecutar la app con la ruta absoluta del intérprete del venv
+"C:/ruta/al/proyecto/.venv/Scripts/python.exe" "C:/ruta/al/proyecto/app.py"
+```
+
 > Abrir en http://127.0.0.1:5000/, subir archivo y Descargar anexo.
 ---
 

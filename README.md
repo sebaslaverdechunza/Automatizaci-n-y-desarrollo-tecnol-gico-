@@ -351,7 +351,7 @@ def geih_pipeline():
 ---
 
 4). Conclusión  
-Este diseño organiza la operación de la GEIH en fases claras con sus entradas, salidas, herramientas y validaciones críticas, asegurando trazabilidad y control de calidad en todo el pipeline.
+Este diseño organiza la operación de la GEIH en fases de sus entradas, salidas, herramientas y validaciones críticas, asegurando trazabilidad y control de calidad en todo el pipeline.
 
 
 

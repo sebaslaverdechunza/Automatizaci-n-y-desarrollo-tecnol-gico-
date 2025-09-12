@@ -2,14 +2,14 @@
 
 Imagina que debes construir un aplicativo sencillo (puede ser en **R Shiny, Flask/Django en Python** o cualquier framework web básico) que:
 
-    + Permita cargar un archivo tabular (ej. .csv o .xlsx).
-    + Genere automáticamente un archivo extraíble en formato Excel (el “anexo”), con las validaciones mínimas de estructura (por ejemplo, que todas las columnas numéricas sean realmente numéricas).
++ Permita cargar un archivo tabular (ej. .csv o .xlsx).
++ Genere automáticamente un archivo extraíble en formato Excel (el “anexo”), con las validaciones mínimas de estructura (por ejemplo, que todas las columnas numéricas sean realmente numéricas).
     
 👉 **Pregunta**: Describe el diseño del aplicativo (interfaz y lógica interna) y escribe un pseudocódigo o fragmento de código que muestre cómo implementarías:
 
-    - La carga del archivo.
-    - La validación mínima de los datos.
-    - La exportación en formato Excel.
+- La carga del archivo.
+- La validación mínima de los datos.
+- La exportación en formato Excel.
 ---
 ## **Solución:**
 

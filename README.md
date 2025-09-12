@@ -36,8 +36,46 @@ Aplicación web mínima (**Flask**) que:
 
 ### 2) Diseño del aplicativo
 
+**Interfaz (UI)**
 
-===
++ Formulario para subir .xlsx/.csv.
++ Resumen de columnas: nombre, tipo detectado (numérica/no numérica), % convertible, nulos tras conversión.
++ Vista previa de la tabla Datos_Deseados (cabeceras por Año, fila de Meses y filas de Conceptos).
++ Botón “Descargar anexo”.
+
+**Lógica interna (backend)**
+
+1. Ingesta
+
+    + Si es .xlsx: lee hoja Base (si existe); adicionalmente intenta reconstruir cabeceras multi-nivel si detecta filas con “Concepto”.
+
+    + Si es .csv: lectura directa.
+
+2. Perfilado y validación mínima
+
+    + Para cada columna: intenta convertir a numérico tras limpieza (quita %, NBSP, espacios; coma→punto).
+
+    + Heurística: si ≥70% de valores no nulos se convierten, la columna se trata como numérica.
+
+    + Registra advertencias (nulos en IDs comunes, valores no convertibles, etc.).
+
+3. Normalización auxiliar
+
+    + Detecta Año/Mes por alias (año/ano/anno/year, mes/month), mapea Ene..Dic ↔ 1..12.
+
+4. Construcción de hojas
+
+    + **Datos_Limpiados**: datos post-coerción (sin redondear a nivel de dato); solo TGP se formatea a 0.00 en Excel; Año/Mes como 0.
+
+    + **Datos_Deseados**: si existen Año/Mes y una columna de valores (TGP), pivotea a Concepto × (Año, Mes). Aplica estilo: tema blanco, años/meses en negrilla, conceptos sin negrilla, bordes #e5e7eb, valores con 0.00.
+
+5. Exportación
+
+    + Crea un BytesIO y escribe con xlsxwriter.
+
+    + Ofrece descarga como anexo_validado.xlsx.
+
+---
 
 # 📊 Validador y Exportador de Anexos (Pregunta 1 – Aplicativo de carga y exportación)
 

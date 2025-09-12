@@ -1,4 +1,4 @@
-# 📊 Pregunta 1 – Aplicativo de carga y exportación
+# <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/0895f575-48f7-48b4-b979-48c09272555c" /> Pregunta 1 – Aplicativo de carga y exportación
 
 Imagina que debes construir un aplicativo sencillo (puede ser en **R Shiny, Flask/Django en Python** o cualquier framework web básico) que:
 

@@ -1,3 +1,39 @@
+# 📊 Pregunta 1 – Aplicativo de carga y exportación
+
+Imagina que debes construir un aplicativo sencillo (puede ser en **R Shiny, Flask/Django en Python** o cualquier framework web básico) que:
+
+    + Permita cargar un archivo tabular (ej. .csv o .xlsx).
+    + Genere automáticamente un archivo extraíble en formato Excel (el “anexo”), con las validaciones mínimas de estructura (por ejemplo, que todas las columnas numéricas sean realmente numéricas).
+    
+👉 **Pregunta**: Describe el diseño del aplicativo (interfaz y lógica interna) y escribe un pseudocódigo o fragmento de código que muestre cómo implementarías:
+
+    - La carga del archivo.
+    - La validación mínima de los datos.
+    - La exportación en formato Excel.
+---
+## **Solución:**
+
+### 1) Descripción breve
+
+Aplicación web mínima (**Flask**) que:
+
++ Carga archivos .xlsx o .csv.
++ Valida estructura básica y detecta columnas numéricas con una heurística (≥70% de valores convertibles).
++ Genera un anexo Excel con hojas:
+
+     + Datos_Limpiados (valores numéricos convertidos; TGP con formato 0.00; Año/Mes como enteros),
+
+     + Validaciones (hallazgos y advertencias),
+
+     + Reporte_Columnas (perfilado básico),
+
+     + Datos_Deseados (matriz final por Concepto × Año/Mes).
+
+Interfaz con: carga de archivo, tabla Resumen de columnas y vista previa HTML de Datos_Deseados; botón Descargar anexo.
+
+> Se asume que la base puede venir en una hoja Base (o la primera hoja si no existe) y que “Total Nacional” es una referencia de cómo se espera ver la información.
+---
+
 # 📊 Validador y Exportador de Anexos (Pregunta 1 – Aplicativo de carga y exportación)
 
 Aplicativo web sencillo para cargar archivos tabulares (`.csv` o `.xlsx`), validar mínimamente la estructura y exportar un archivo Excel (“anexo”) con los datos limpios y un registro de errores.

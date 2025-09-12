@@ -212,7 +212,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
-## 🚀 Diseño del proceso (flujo general)
+## 1). Diseño del proceso (flujo general)
 
 ```text
 [Inicio: Fuentes de Datos Externas]
@@ -274,7 +274,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
-## ⚙️ Orquestación y control
+## 2). Orquestación y control
 
 + **Orquestador**: Airflow o Prefect (DAG mensual con retries y alertas).
 + **Capas de datos**: Bronze → Silver → Gold (lineage y trazabilidad).
@@ -283,7 +283,7 @@ El objetivo no es una implementación completa, sino un esquema conceptual que d
 
 ---
 
-## <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6ec57bed-b386-492a-82b2-8ceb2eba4c79" /> Pseudodiagrama de automatización (ejemplo con Prefect)
+## <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6ec57bed-b386-492a-82b2-8ceb2eba4c79" /> 3). Pseudodiagrama de automatización (ejemplo con Prefect)
 
 ```python
 from prefect import flow, task   # Prefect permite orquestar pipelines con tareas y flujos
@@ -351,7 +351,7 @@ def geih_pipeline():
 ```
 ---
 
-✅ Conclusión  
+4). Conclusión  
 Este diseño organiza la operación de la GEIH en fases claras con sus entradas, salidas, herramientas y validaciones críticas, asegurando trazabilidad y control de calidad en todo el pipeline.
 
 

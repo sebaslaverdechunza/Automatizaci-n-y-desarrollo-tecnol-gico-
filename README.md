@@ -144,12 +144,19 @@ construir_excel(df_limpio, df_multi, validaciones, resumen):
 **Requisitos**: Python 3.10+ · `Flask`, `pandas`, `numpy`, `openpyxl`, `xlsxwriter`
 
 ```bash
+(Opción A)
+
 python -m venv .venv
 # En PowerShell (si aplica): Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 # Activar venv:
 #   PS:   .\.venv\Scripts\Activate.ps1
 #   CMD:  .\.venv\Scripts\activate.bat
 #   macOS/Linux: source .venv/bin/activate
+
+(Opción B)
+
+PS C:\Users\USUARIO\Documents\PRUEBAS\DANE - AUTOMATIZACIONES\app_validador> & "C:/Users/USUARIO/Documents/PRUEBAS/DANE - AUTOMATIZACIONES/app_validador/.venv/Scripts/python.exe" "c:/Users/USUARIO/Documents/PRUEBAS/DANE - AUTOMATIZACIONES/app_validador/app.py"
+
 
 pip install Flask pandas numpy openpyxl XlsxWriter
 python app.py

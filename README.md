@@ -13,7 +13,7 @@ Imagina que debes construir un aplicativo sencillo (puede ser en **R Shiny, Flas
 ---
 ## **Solución:**
 
-### 1) Descripción breve
+### 1). Descripción breve
 
 Aplicación web mínima (**Flask**) que:
 
@@ -34,7 +34,7 @@ Aplicación web mínima (**Flask**) que:
 > Se asume que la base puede venir en una hoja Base (o la primera hoja si no existe) y que “Total Nacional” es una referencia de cómo se espera ver la información.
 ---
 
-### 2) Diseño del aplicativo
+### 2). Diseño del aplicativo
 
 **Interfaz (UI)**
 
@@ -77,124 +77,85 @@ Aplicación web mínima (**Flask**) que:
 
 ---
 
-# 📊 Validador y Exportador de Anexos (Pregunta 1 – Aplicativo de carga y exportación)
+### 3). Pseudocódigo (bosquejo)
 
-Aplicativo web sencillo para cargar archivos tabulares (`.csv` o `.xlsx`), validar mínimamente la estructura y exportar un archivo Excel (“anexo”) con los datos limpios y un registro de errores.
+```text
+POST /:
+  archivo = request.files["file"]
+  if ext == .xlsx:
+      df_simple, df_multi = leer_base_robusto(xlsx, sheet="Base" o primera)
+  elif ext == .csv:
+      df_simple = read_csv(...)
+      df_multi = None
+  else:
+      error("Formato no soportado")
 
-Este ejercicio corresponde a la **Pregunta 1 – Aplicativo de carga y exportación**.
+  df_limpio, resumen, validaciones = validar_y_convertir(df_simple)
+  binario_excel = construir_excel(df_limpio, df_multi, validaciones, resumen)
+  preview = construir_preview_html(df_limpio o df_multi)
 
+  render(template, resumen=resumen, preview=preview, link_descarga=/download)
+```
+**Validación mínima:**
+
+```text
+validar_y_convertir(df):
+  for col in df.columns:
+    s_limpia = limpiar_texto_num(df[col])    # quita %, NBSP, espacios, coma→punto
+    conv = to_numeric(s_limpia, errors="coerce")
+    porc = porcentaje_no_nulos(conv)
+    if porc >= 70%:
+       df[col] = conv                        # convierte a numérico
+       reporta(tipo="numérica", porc=porc)
+    else:
+       reporta(tipo="no numérica", porc=porc)
+  valida_nulos_en_IDs(df)
+  return df, resumen, validaciones
+```
+
+**Exportación a Excel:**
+
+```text
+construir_excel(df_limpio, df_multi, validaciones, resumen):
+  with ExcelWriter(engine="xlsxwriter") as writer:
+    # Hoja 1: Datos_Limpiados
+    escribir(df_limpio)
+    formatear(TGP -> "0.00", Año/Mes -> "0")
+
+    # Hoja 2: Validaciones
+    escribir(validaciones)
+
+    # Hoja 3: Reporte_Columnas
+    escribir(resumen)
+
+    # Hoja 4: Datos_Deseados
+    if (Año, Mes detectados) y (columna valor detectada):
+        pv = pivotear_por(Concepto x (Año, Mes))
+        aplicar_estilos_tema_blanco_bordes(pv)
+    else if df_multi:
+        reconstruir_desde_multiindex_y_estilar()
+
+  return bytes_del_archivo
+
+```
 ---
+### 4). Ejecutar (app.py)
 
-## 🚀 Instalación y ejecución
-
-### 1. Clonar o copiar el repositorio
-Ubícate en la carpeta de trabajo y crea un entorno virtual:
+**Requisitos**: Python 3.10+ · `Flask`, `pandas`, `numpy`, `openpyxl`, `xlsxwriter`
 
 ```bash
 python -m venv .venv
+# En PowerShell (si aplica): Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+# Activar venv:
+#   PS:   .\.venv\Scripts\Activate.ps1
+#   CMD:  .\.venv\Scripts\activate.bat
+#   macOS/Linux: source .venv/bin/activate
+
+pip install Flask pandas numpy openpyxl XlsxWriter
+python app.py
 ```
-
-### 2. Activar el entorno virtual
-Windows PowerShell:
-
-```bash
-.\.venv\Scripts\Activate.ps1
-```
-### 3. Instalar dependencias
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Ejecutar el aplicativo
-
-```bash
-streamlit run app.py
-```
-
-La aplicación se abrirá en tu navegador en:
-http://localhost:8501/
+> Abrir en http://127.0.0.1:5000/, subir archivo y Descargar anexo.
 ---
-
-🖥️ Interfaz del aplicativo
-
-+ Subida de archivo (.csv o .xlsx).
-
-+ Si es Excel: detección automática de hojas y selector de cuál procesar.
-
-+ Opcionales:
-
-     + Columnas obligatorias: asegura que ciertas variables estén presentes.
-
-     + Columnas porcentaje: permite forzar que se validen como %.
-
-+ Botón Validar y generar anexo.
-
-+ Panel de resultados:
-
-     + Resumen de validación.
-
-     + Vista previa (primeras 20 filas).
-
-     + Errores detectados.
-
-     + Botón de descarga del anexo validado.
- 
-
- ---
- 
-✅ Pregunta 1 – Aplicativo de carga y exportación
-
-## 🖥️ Diseño del aplicativo
-
-### Interfaz
-- **Input de archivo**: cargar un `.csv` o `.xlsx`.
-- **Selector de hoja** (si es Excel; por defecto se usa `Base`).
-- **Botón de validación y exportación**.
-- **Vista previa**: primeras filas del archivo cargado.
-- **Botón de descarga**: genera el anexo Excel con:
-  - `Datos_Limpios` → tabla con columnas numéricas convertidas.
-  - `Errores_Validacion` → lista de celdas que no pudieron convertirse.
-
-### Lógica interna
-1. **Carga del archivo** en memoria (con `pandas`).
-2. **Detección de columnas numéricas**: si ≥80% de los valores pueden convertirse a número.
-3. **Conversión y validación**:  
-   - Se normalizan separadores de miles/decimales.  
-   - Se registran celdas no convertibles indicando fila y columna.  
-4. **Exportación**: se genera un Excel con dos hojas (datos limpios + errores).
-
----
-
-## 🔎 Pseudocódigo
-
-INICIO
-  archivo <- subir (.csv | .xlsx)
-  si es Excel:
-      hoja <- seleccionar (por defecto “Base”)
-
-  df <- leer_archivo(archivo, hoja)
-
-  clean <- copiar(df)
-  errores <- []
-
-  PARA cada columna en df:
-    si es numérica:
-      parsed <- normalizar_y_convertir(columna)
-      registrar errores si no convertible
-      si columna es porcentaje:
-        registrar errores si valor <0 o >100
-        guardar como fracción (Excel %)
-      sino:
-        guardar como numérico
-
-  generar Excel con:
-    - Hoja Datos_Limpios
-    - Hoja Errores_Validacion
-  ofrecer descarga
-FIN
-
- ---
 
  # 📊 Pregunta 2 – Diagrama de procesos para la GEIH
 

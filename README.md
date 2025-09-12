@@ -174,7 +174,7 @@ Windows (PowerShell/CMD):
 > Abrir en http://127.0.0.1:5000/, subir archivo y Descargar anexo.
 ---
 
- # <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/e3984364-5f1f-4f74-93eb-4cb9f2352642" /> Pregunta 2 – Diagrama de procesos para la GEIH
+ # <img width="30" height="30" alt="image" src="https://github.com/user-attachments/assets/e3984364-5f1f-4f74-93eb-4cb9f2352642" /> Pregunta 2 – Diagrama de procesos para la GEIH
 
 Considerando que una operación como la **GEIH** pasa por:
 
